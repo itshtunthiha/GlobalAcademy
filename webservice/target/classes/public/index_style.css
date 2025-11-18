@@ -1,0 +1,89 @@
+body {
+    /* Background Gradient */
+    background: linear-gradient(180deg, #f8eee6 0%, #ffbde9 100%); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    font-family: sans-serif; /* Use a cute, rounded font if available */
+}
+
+/* --- Login Card Container --- */
+.login-container {
+    background-color: #fff;
+    padding: 30px 40px;
+    border-radius: 25px; /* Rounded corners for the card */
+    box-shadow: 0 10px 30px rgba(253, 222, 237, 0.7); /* Soft pink shadow */
+    width: 90%;
+    max-width: 350px;
+    text-align: center;
+}
+
+/* --- Mascot Image --- */
+.mascot-image {
+    width: 120px; /* Adjust size as needed */
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* --- Input Fields --- */
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: #f7f7f7; /* Light background for the field */
+    border-radius: 30px;
+    margin-bottom: 15px;
+    padding: 8px 15px;
+    border: 1px solid #eee;
+}
+
+.input-group input {
+    flex-grow: 1;
+    border: none;
+    background: transparent;
+    padding: 5px 10px;
+    font-size: 16px;
+    outline: none; /* Remove default focus border */
+    color: #555;
+}
+
+.input-group .icon {
+    font-size: 20px;
+    margin-right: 10px;
+    color: #c993a4; /* A soft color for the icons */
+}
+
+/* --- Login Button --- */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 30px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #fff;
+    cursor: pointer;
+    /* Gradient from the reference image */
+    background: linear-gradient(135deg, #c993a4 0%, #dda2b9 100%);
+    box-shadow: 0 5px 15px rgba(201, 147, 164, 0.5); /* Soft button shadow */
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    opacity: 0.9;
+}
+
+/* --- Forgot Password Link --- */
+.forgot-password {
+    font-size: 12px;
+    margin-top: 15px;
+    color: #a8a8a8;
+}
+
+.forgot-password a {
+    color: #c993a4; /* Matching the button color */
+    text-decoration: none;
+    font-weight: bold;
+}
