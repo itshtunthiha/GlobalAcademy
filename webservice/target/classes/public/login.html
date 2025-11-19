@@ -5,57 +5,79 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kawaii Login</title>
     <link rel="stylesheet" href="index_style.css">
-    </head>
+</head>
+
 <body>
     <div class="login-container">
         <div class="image-placeholder">
             <img src="bunny.png" alt="Cute Bunny Mascot" class="mascot-image">
-            </div>
+        </div>
 
         <form id="loginForm" class="login-form">
             <div class="input-group">
-                <img class="icon" width="24px" src="inbox_icon.svg" alt="My SVG Image">
-                 <input type="text" id="username" placeholder="Username or the email address" aria-label="Email address">
+                <img class="icon" width="24px" src="inbox_icon.svg" alt="Email Icon">
+                <input type="text" id="username" placeholder="Username or email address" aria-label="Email address">
             </div>
 
             <div class="input-group">
-                <img class="icon" width="24px" src="password_icon.svg" alt="My SVG Image">
+                <img class="icon" width="24px" src="password_icon.svg" alt="Password Icon">
                 <input type="password" id="password" placeholder="Enter password" aria-label="Password">
             </div>
 
             <button type="submit" class="login-button">
                 LOGIN
             </button>
-            
+
             <p class="forgot-password">
                 Forgot Password? <a href="#">Click Here</a>
             </p>
+
+            <!-- Error message -->
+            <p id="errorMessage" style="color:red; text-align:center; margin-top:10px; display:none;">
+                Invalid username or password
+            </p>
         </form>
     </div>
-</body>
-<script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-        e.preventDefault(); // stop default form submit
-    
-        const data = {
-            username: document.getElementById("username").value,
-            password: document.getElementById("password").value
-        };
-    
-        fetch("http://localhost:8080/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(data)
-        })
-        .then(res => res.json())
-        .then(result => {
-            console.log(result);
-            window.location.href = "/welcome.html";
-        })
-        .catch(err => console.error("Fetch error:", err));
-    });
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const errorMessage = document.getElementById("errorMessage");
+            errorMessage.style.display = "none";
+
+            const data = {
+                username: document.getElementById("username").value.trim(),
+                password: document.getElementById("password").value.trim()
+            };
+
+            fetch("http://localhost:8080/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            })
+            .then(async res => {
+                let body = await res.json();
+
+                if (res.status === 401) {
+                    errorMessage.textContent = body.error || "Invalid login";
+                    errorMessage.style.display = "block";
+                    return;
+                }
+
+                // Success: save token + username
+                localStorage.setItem("token", body.token);
+                localStorage.setItem("username", body.username);
+
+                // Redirect
+                window.location.href = "welcome.html";
+            })
+            .catch(err => {
+                console.error("Fetch error:", err);
+                errorMessage.textContent = "Network error. Try again.";
+                errorMessage.style.display = "block";
+            });
+        });
     </script>
-    
+</body>
 </html>
