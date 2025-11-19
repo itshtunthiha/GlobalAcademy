@@ -52,7 +52,7 @@
             color: #b41f7d;
         }
 
-        .login-btn {
+        a.login-btn {
             background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
             color: white;
             padding: 12px 32px;
@@ -64,16 +64,16 @@
             box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
         }
 
-        .login-btn:hover {
+        a.login-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
         }
 
-        .logout-btn {
+        a.logout-btn {
             background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
         }
 
-        .logout-btn:hover {
+        a.logout-btn:hover {
             box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
         }
 
@@ -143,53 +143,6 @@
             filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
         }
 
-        /* File upload for custom character */
-        .upload-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .upload-placeholder {
-            width: 400px;
-            height: 400px;
-            border: 3px dashed #c4a9cc;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            color: #999;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        .upload-placeholder:hover {
-            border-color: #a855f7;
-            background: rgba(255, 255, 255, 0.7);
-        }
-
-        .upload-placeholder svg {
-            width: 60px;
-            height: 60px;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        #characterUpload {
-            display: none;
-        }
-
-        .character-display {
-            display: none;
-        }
-
-        .character-display.active {
-            display: block;
-        }
-
         /* Responsive Design */
         @media (max-width: 1024px) {
             .hero {
@@ -239,9 +192,8 @@
                 font-size: 18px;
             }
 
-            .bunny-container {
-                width: 300px;
-                height: 300px;
+            .bunny-character {
+                max-width: 300px;
             }
         }
     </style>
@@ -254,7 +206,7 @@
             <li><a href="#home">Home</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="flashcards.html">Play game</a></li>
-            <li><a href="#" class="login-btn logout-btn" onclick="logout()" id="authBtn">Login</a></li>
+            <li><a href="#" class="login-btn logout-btn" id="authBtn">Login</a></li>
         </ul>
     </nav>
 
@@ -272,19 +224,7 @@
         </div>
 
         <div class="hero-image">
-            <div class="upload-container">
-                <img id="characterImage" class="bunny-character character-display" src="" alt="Cute Bunny Character">
-                <label for="characterUpload" class="upload-placeholder" id="uploadPlaceholder">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                        <polyline points="17 8 12 3 7 8"></polyline>
-                        <line x1="12" y1="3" x2="12" y2="15"></line>
-                    </svg>
-                    <span>Click to upload your bunny character</span>
-                    <span style="font-size: 14px; margin-top: 10px;">Or it will use your character automatically</span>
-                </label>
-                <input type="file" id="characterUpload" accept="image/*">
-            </div>
+            <img src="bunny.png" alt="Cute Bunny Character" class="bunny-character">
         </div>
     </div>
 
@@ -298,6 +238,7 @@
             authBtn.textContent = 'Logout';
             authBtn.classList.add('logout-btn');
             welcomeMessage.innerHTML = `Welcome back, <span class="username-display">${username}</span>! Ready to continue your Thai learning journey?`;
+            authBtn.onclick = logout;
         } else {
             authBtn.textContent = 'Login';
             authBtn.classList.remove('logout-btn');
@@ -305,42 +246,10 @@
         }
 
         function logout() {
-            if (username) {
-                localStorage.removeItem('username');
-                localStorage.removeItem('token');
-                window.location.reload();
-            } else {
-                window.location.href = 'login.html';
-            }
+            localStorage.removeItem('username');
+            localStorage.removeItem('token');
+            window.location.reload();
         }
-
-        // Character image upload and display
-        const characterUpload = document.getElementById('characterUpload');
-        const characterImage = document.getElementById('characterImage');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-
-        // Load saved character or show placeholder
-        const savedCharacter = localStorage.getItem('characterImage');
-        if (savedCharacter) {
-            characterImage.src = savedCharacter;
-            characterImage.classList.add('active');
-            uploadPlaceholder.style.display = 'none';
-        }
-
-        characterUpload.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    characterImage.src = event.target.result;
-                    characterImage.classList.add('active');
-                    uploadPlaceholder.style.display = 'none';
-                    // Save to localStorage
-                    localStorage.setItem('characterImage', event.target.result);
-                };
-                reader.readAsDataURL(file);
-            }
-        });
     </script>
 </body>
 </html>
