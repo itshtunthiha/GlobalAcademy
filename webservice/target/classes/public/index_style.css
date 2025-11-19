@@ -22,7 +22,7 @@ body {
 
 /* --- Mascot Image --- */
 .mascot-image {
-    width: 480px; /* Adjust size as needed */
+    width: 240px; /* Adjust size as needed */
     height: auto;
     margin-bottom: 20px;
 }
@@ -49,6 +49,7 @@ body {
 }
 
 .input-group .icon {
+    width: 20px;
     font-size: 20px;
     margin-right: 10px;
     color: #c993a4; /* A soft color for the icons */

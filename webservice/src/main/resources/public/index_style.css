@@ -22,7 +22,7 @@ body {
 
 /* --- Mascot Image --- */
 .mascot-image {
-    width: 480px; /* Adjust size as needed */
+    width: 240px; /* Adjust size as needed */
     height: auto;
     margin-bottom: 20px;
 }
@@ -34,7 +34,7 @@ body {
     background-color: #f7f7f7; /* Light background for the field */
     border-radius: 30px;
     margin-bottom: 15px;
-    padding: 8px 15px;uyhgyugfiukugyftyyhbuy
+    padding: 8px 15px;
     border: 1px solid #eee;
 }
 
@@ -49,6 +49,7 @@ body {
 }
 
 .input-group .icon {
+    width: 20px;
     font-size: 20px;
     margin-right: 10px;
     color: #c993a4; /* A soft color for the icons */

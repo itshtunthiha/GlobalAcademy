@@ -12,19 +12,19 @@
             <img src="bunny.png" alt="Cute Bunny Mascot" class="mascot-image">
             </div>
 
-        <form class="login-form">
+        <form id="loginForm" class="login-form">
             <div class="input-group">
-                <img fill="#ffbde9" width="24px" src="inbox_icon.svg" alt="My SVG Image">
-                 <input type="email" value="bear@gmail.com" readonly aria-label="Email address">
+                <img class="icon" width="24px" src="inbox_icon.svg" alt="My SVG Image">
+                 <input type="text" id="username" placeholder="Username or the email address" aria-label="Email address">
             </div>
 
             <div class="input-group">
-                <img fill="#ffbde9" width="24px" src="password_icon.svg" alt="My SVG Image">
-                <input type="password" value="******" aria-label="Password">
+                <img class="icon" width="24px" src="password_icon.svg" alt="My SVG Image">
+                <input type="password" id="password" placeholder="Enter password" aria-label="Password">
             </div>
 
             <button type="submit" class="login-button">
-                LOGIN WITH EMAIL
+                LOGIN
             </button>
             
             <p class="forgot-password">
@@ -33,4 +33,29 @@
         </form>
     </div>
 </body>
+<script>
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+        e.preventDefault(); // stop default form submit
+    
+        const data = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value
+        };
+    
+        fetch("http://localhost:8080/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+        .then(res => res.json())
+        .then(result => {
+            console.log(result);
+            window.location.href = "/welcome.html";
+        })
+        .catch(err => console.error("Fetch error:", err));
+    });
+    </script>
+    
 </html>
