@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Why Choose NONG MALI?</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Canva Sans', 'Bricolage Grotesque', sans-serif;
+        }
+
+        body {
+            background: #fbf3eb;
+            min-height: 100vh;
+        }
+
+        /* NAV BAR */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        a.login-btn {
+            background: #b41f7d;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 40px;
+            box-shadow: 0 4px 12px rgba(180, 31, 125, 0.3);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* HERO TITLE */
+        .title-area {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 60px;
+        }
+
+        .title-area h1 {
+            font-size: 52px;
+            font-weight: 800;
+            color: #000;
+        }
+
+        .title-area p {
+            font-size: 20px;
+            margin-top: 16px;
+            color: #c2188f;
+            font-weight: 500;
+        }
+
+        /* FEATURES CONTAINER */
+        .features {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 40px;
+            flex-wrap: wrap;
+            padding-bottom: 80px;
+        }
+
+        .feature-box {
+            background: #fff;
+            width: 260px;
+            padding: 40px 20px;
+            border-radius: 26px;
+            text-align: center;
+            border: 2px solid #f7d3e8;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            transition: 0.25s ease;
+        }
+
+        .feature-box:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(180,31,125,0.15);
+        }
+
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            background: #fde3f1;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .icon-circle img {
+            width: 40px;
+            opacity: 0.85;
+        }
+
+        .feature-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #000;
+            margin-bottom: 10px;
+        }
+
+        .feature-text {
+            font-size: 15px;
+            color: #7c665c;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">NONG MALI</div>
+
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="flashcards.html">Play game</a></li>
+            <li><a href="login.html" class="login-btn" id="authBtn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="title-area">
+        <h1>Why choose NONG MALI?</h1>
+        <p>Learn Thai has never been this engaging and effective</p>
+    </div>
+
+    <div class="features">
+
+        <!-- Smart Learning -->
+        <div class="feature-box">
+            <div class="icon-circle">
+                <img src="icons/brain.svg" alt="Brain Icon" />
+            </div>
+            <div class="feature-title">Smart Learning</div>
+            <div class="feature-text">
+                Our intelligent system adapts to your learning pace and style.
+            </div>
+        </div>
+
+        <!-- Quick & Fun -->
+        <div class="feature-box">
+            <div class="icon-circle">
+                <img src="icons/bolt.svg" alt="Lightning Icon" />
+            </div>
+            <div class="feature-title">Quick & Fun</div>
+            <div class="feature-text">
+                Master Thai vocabulary through engaging, bite-sized lessons.
+            </div>
+        </div>
+
+        <!-- Track Progress -->
+        <div class="feature-box">
+            <div class="icon-circle">
+                <img src="icons/trophy.svg" alt="Trophy Icon" />
+            </div>
+            <div class="feature-title">Track Progress</div>
+            <div class="feature-text">
+                See your improvement with detailed progress tracking.
+            </div>
+        </div>
+
+        <!-- Made with Love -->
+        <div class="feature-box">
+            <div class="icon-circle">
+                <img src="icons/heart.svg" alt="Heart Icon" />
+            </div>
+            <div class="feature-title">Made with Love</div>
+            <div class="feature-text">
+                Created by language lovers for language learners.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const username = localStorage.getItem("username");
+        const authBtn = document.getElementById("authBtn");
+
+        if (username) {
+            authBtn.textContent = "Logout";
+            authBtn.onclick = () => {
+                localStorage.clear();
+                window.location.href = "login.html";
+            };
+        }
+    </script>
+
+</body>
+</html>
