@@ -43,6 +43,11 @@ public class Server {
             }
         });
 
+        get("/flashcards/default", (req, res) -> {
+            res.type("application/json");
+            return gson.toJson(UseCard.getAllCards());
+        });        
+
         // Protected API — must be logged in
         get("/flashcards/random", (req, res) -> {
             Flashcard card = UseCard.getRandomCard();

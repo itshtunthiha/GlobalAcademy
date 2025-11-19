@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flashcards - NONG MALI</title>
 
     <style>
@@ -18,7 +18,6 @@
             min-height: 100vh;
         }
 
-        /* NAVIGATION */
         nav {
             display: flex;
             justify-content: space-between;
@@ -55,7 +54,6 @@
             font-weight: 600;
         }
 
-        /* PAGE TITLE */
         .title-section {
             text-align: center;
             margin-top: 40px;
@@ -73,16 +71,15 @@
             color: #7c665c;
         }
 
-        /* FLASHCARD GRID */
         .flashcard-container {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: 40px;
             margin-top: 60px;
             padding-bottom: 80px;
         }
 
-        /* CARD STYLE */
         .card {
             width: 260px;
             height: 360px;
@@ -109,7 +106,7 @@
             backface-visibility: hidden;
             background: #fff;
             border-radius: 26px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -138,21 +135,9 @@
             font-size: 34px;
             font-weight: 700;
         }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-            .flashcard-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 30px;
-            }
-        }
     </style>
 </head>
-
 <body>
-
-    <!-- NAVIGATION -->
     <nav>
         <div class="logo">NONG MALI</div>
         <ul class="nav-links">
@@ -163,89 +148,65 @@
         </ul>
     </nav>
 
-    <!-- TITLE -->
     <div class="title-section">
         <h1>Try Our Flashcards</h1>
         <p>Click on any card to flip it and see the translation!</p>
     </div>
 
-    <!-- FLASHCARDS -->
-    <div class="flashcard-container">
-
-        <!-- CARD 1 -->
-        <div class="card">
-            <div class="card-inner">
-                <div class="card-face card-front">
-                    <div class="front-text">สวัสดี</div>
-                    <div class="click-text">Click to flip</div>
-                </div>
-                <div class="card-face card-back">
-                    Hello
-                </div>
-            </div>
-        </div>
-
-        <!-- CARD 2 -->
-        <div class="card">
-            <div class="card-inner">
-                <div class="card-face card-front">
-                    <div class="front-text">ขอบคุณ</div>
-                    <div class="click-text">Click to flip</div>
-                </div>
-                <div class="card-face card-back">
-                    Thank you
-                </div>
-            </div>
-        </div>
-
-        <!-- CARD 3 -->
-        <div class="card">
-            <div class="card-inner">
-                <div class="front-text card-face card-front">
-                    ยินดีที่ได้<br>รู้จัก
-                    <div class="click-text">Click to flip</div>
-                </div>
-                <div class="card-face card-back">
-                    Nice to meet you
-                </div>
-            </div>
-        </div>
-
-    </div>
+    <div class="flashcard-container" id="flashcardContainer"></div>
 
     <script>
-        /* --------------------------
-           🔒 LOGIN REQUIRED
-        ----------------------------*/
         const token = localStorage.getItem("token");
-        if (!token) {
-            window.location.href = "login.html";
+        if (!token) window.location.href = "login.html";
+
+        function createCard(front, back) {
+            return `
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-face card-front">
+                            <div class="front-text">${front}</div>
+                            <div class="click-text">Click to flip</div>
+                        </div>
+                        <div class="card-face card-back">${back}</div>
+                    </div>
+                </div>
+            `;
         }
 
-        /* --------------------------
-           🂠 Flashcard Flip Logic
-        ----------------------------*/
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', () => {
-                card.classList.toggle('flipped');
-            });
-        });
+        const container = document.getElementById("flashcardContainer");
 
-        /* --------------------------
-           👤 Navbar Login/Logout
-        ----------------------------*/
-        const username = localStorage.getItem('username');
-        const authBtn = document.getElementById('authBtn');
+        function enableFlip() {
+            document.querySelectorAll(".card").forEach(card => {
+                card.onclick = () => card.classList.toggle("flipped");
+            });
+        }
+
+        async function loadDefaultCards() {
+            const res = await fetch("http://localhost:8080/flashcards/default", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            const cards = await res.json();
+            cards.forEach(c => {
+                container.innerHTML += createCard(c.front, c.back);
+            });
+
+            enableFlip();
+        }
+
+        // Load ONLY the default cards
+        loadDefaultCards();
+
+        const username = localStorage.getItem("username");
+        const authBtn = document.getElementById("authBtn");
 
         if (username) {
             authBtn.textContent = "Logout";
-            authBtn.onclick = function () {
-                localStorage.removeItem('username');
-                localStorage.removeItem('token');
+            authBtn.onclick = () => {
+                localStorage.clear();
                 window.location.href = "login.html";
             };
         }
     </script>
-
 </body>
 </html>

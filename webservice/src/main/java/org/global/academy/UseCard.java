@@ -7,13 +7,11 @@ public class UseCard {
     private static List<Flashcard> cards = new ArrayList<>();
 
     static {
-        // Add some sample Thai consonant flashcards
-        cards.add(new ThaiConsonantFlashcard("ก", "g/k", "ko kai"));
-        cards.add(new ThaiConsonantFlashcard("ข", "kh", "kho khai"));
-        cards.add(new ThaiConsonantFlashcard("ค", "kh", "kho khwai"));
-        cards.add(new ThaiConsonantFlashcard("ง", "ng", "ngo ngu"));
+        cards.add(new Flashcard("สวัสดี", "Hello"));
+        cards.add(new Flashcard("ขอบคุณ", "Thank you"));
+        cards.add(new Flashcard("ยินดีที่ได้<br>รู้จัก", "Nice to meet you"));
     }
-
+    
     public static List<Flashcard> getAllCards() {
         return cards;
     }
