@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thai Flashcards</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; }
+        .flashcard { font-size: 48px; border: 2px solid #333; padding: 50px; margin: 20px auto; width: 300px; cursor: pointer; transition: transform 0.3s; }
+        .flashcard:hover { transform: scale(1.05); }
+        .back { display: none; color: #007BFF; font-size: 24px; margin-top: 20px; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+    <h1>Thai Flashcards</h1>
+    <div class="flashcard" id="flashcard">Click to reveal</div>
+    <div class="back" id="back"></div>
+    <br>
+    <button onclick="loadCard()">Next Card</button>
+
+    <script>
+        let currentCard = null;
+        const flashcard = document.getElementById('flashcard');
+        const back = document.getElementById('back');
+
+        flashcard.addEventListener('click', () => {
+            if (currentCard) {
+                back.style.display = back.style.display === 'none' ? 'block' : 'none';
+            }
+        });
+
+        async function loadCard() {
+            const res = await fetch('/flashcards/random');
+            const card = await res.json();
+            currentCard = card;
+            flashcard.textContent = card.front;
+            back.textContent = `Meaning: ${card.back}` + (card.pronunciation ? `\nPronunciation: ${card.pronunciation}` : '');
+            back.style.display = 'none';
+        }
+
+        // Load first card on page load
+        loadCard();
+    </script>
+
+</body>
+</html>

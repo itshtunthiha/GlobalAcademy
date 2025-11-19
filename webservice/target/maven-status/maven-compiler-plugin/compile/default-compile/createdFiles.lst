@@ -1,6 +1,4 @@
 org/global/academy/UseCard.class
-org/global/academy/Server$IntegerResponse.class
-org/global/academy/Flashcard$1.class
 org/global/academy/IntegerResponse.class
 org/global/academy/ThaiConsonantFlashcard.class
 org/global/academy/Flashcard.class
