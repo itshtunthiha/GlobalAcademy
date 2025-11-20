@@ -1,14 +1,20 @@
 # 📘 **NONG MALI — Thai Learning Web App**
 
-Welcome to **NONG MALI**, a simple but engaging web app designed to help users learn Thai vocabulary through beautiful flashcards, progress tracking, and a clean modern UI.
+**NONG MALI** is an engaging web app designed to help users learn Thai vocabulary through interactive flashcards, progress tracking, and a clean, modern UI.
 
-This project includes:
+This project features:
 
-* ✔ A Java backend built with **Spark Java**
-* ✔ Static frontend pages (HTML, CSS, JS)
-* ✔ Flashcard system with front/back flipping
-* ✔ Token-based login
-* ✔ Beautiful UI inspired by educational apps
+* ✔ Java backend using **Spark Java**
+* ✔ Static frontend (HTML, CSS, JS)
+* ✔ Flashcard system with front/back flipping animation
+* ✔ Token-based login authentication
+* ✔ Modern, educational-inspired UI
+
+---
+
+## 📸 Preview / Screenshot
+
+![NONG MALI Preview](webservice/src/main/resources/public/imgs/bunny.png)
 
 ---
 
@@ -16,7 +22,7 @@ This project includes:
 
 ```
 webservice/
-├── pom.xml                     # Maven config
+├── pom.xml                     # Maven configuration
 ├── src/
 │   ├── main/
 │   │   ├── java/org/global/academy/
@@ -31,12 +37,14 @@ webservice/
 │   │       ├── about.html
 │   │       ├── flashcards.html
 │   │       ├── login.html
-│   │       ├── index_style.css
-│   │       ├── bunny.png / bunny-graphic.png
+│   │       ├── index-style.css
+│   │       ├── imgs/bunny.png
 │   │       └── icons/
 │   │           ├── bolt.svg
 │   │           ├── brain.svg
 │   │           ├── heart.svg
+│   │           ├── inbox-icon.svg
+│   │           ├── password-icon.svg
 │   │           └── trophy.svg
 └── target/                     # Compiled output
 ```
@@ -45,41 +53,40 @@ webservice/
 
 ## 🚀 Running the Project
 
-### **1. Build with Maven**
+### 1. Build with Maven
 
-```
+```bash
 mvn clean package
 ```
 
-This generates:
+Generates:
 
 ```
 target/spark-hello-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-### **2. Run the server**
+### 2. Run the server
 
-```
+```bash
 java -jar target/spark-hello-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
-The server runs on:
+Access the app at:
 
-👉 **[http://localhost:8080](http://localhost:8080)**
+👉 [http://localhost:8080](http://localhost:8080)
 
 ---
 
 ## 🎮 Flashcards Feature
 
-The `flashcards.html` page:
+`flashcards.html`:
 
-* Loads flashcards from
-  **GET /flashcards/default**
-* Displays cards with a flip animation
-* Requires login (JWT token stored in localStorage)
+* Loads flashcards via **GET /flashcards/default**
+* Displays cards with flip animation
+* Requires login (JWT token stored in `localStorage`)
 * Uses clean UI and Thai fonts
 
-Flashcard JSON example:
+**Flashcard JSON Example:**
 
 ```json
 [
@@ -92,13 +99,13 @@ Flashcard JSON example:
 
 ## 🔐 Authentication
 
-Login is handled by:
+Login handled via:
 
-```
+```http
 POST /login
 ```
 
-On success, the backend returns:
+On success, the server returns:
 
 ```json
 {
@@ -107,66 +114,64 @@ On success, the backend returns:
 }
 ```
 
-The client stores it:
+Client stores credentials:
 
-```
-localStorage.setItem("token", token)
-localStorage.setItem("username", username)
+```javascript
+localStorage.setItem("token", token);
+localStorage.setItem("username", username);
 ```
 
-If no token → user is redirected to `login.html`.
+Without a valid token, users are redirected to `login.html`.
 
 ---
 
-## 🖥 Frontend Pages Summary
+## 🖥 Frontend Pages
 
-| File                                   | Description                                    |
-| -------------------------------------- | ---------------------------------------------- |
-| **index.html**                         | Welcome landing page                           |
-| **welcome.html**                       | Post-login greeting                            |
-| **login.html**                         | Login UI                                       |
-| **flashcards.html**                    | Flashcards game                                |
-| **about.html**                         | About NONG MALI                                |
+| File                | Description              |
+| ------------------- | ------------------------ |
+| **index.html**      | Welcome landing page     |
+| **welcome.html**    | Post-login greeting      |
+| **login.html**      | Login interface          |
+| **flashcards.html** | Flashcards learning page |
+| **about.html**      | About NONG MALI          |
 
 ---
 
 ## 🛠 Tech Stack
 
-### **Backend**
+### Backend
 
 * Java 17+
-* Spark Java (Micro-framework)
+* Spark Java micro-framework
 * Maven
 * Gson (JSON serialization)
 
-### **Frontend**
+### Frontend
 
-* Vanilla HTML
-* CSS
-* JavaScript
-* Custom UI inspired by modern learning apps
+* HTML, CSS, JavaScript
+* Custom UI inspired by modern educational apps
 
 ---
 
-## 🌸 NONG MALI Philosophy
+## 🌸 Philosophy
 
-NONG MALI aims to make Thai learning:
+NONG MALI makes learning Thai:
 
 * **Simple**
 * **Fun**
 * **Beautiful**
 * **Beginner-friendly**
 
-Learning Thai should feel like playing, not studying ✨
+Learning should feel like playing, not studying ✨
 
 ---
 
 ## 📄 License
 
-This project is for educational use.
+Educational use only.
 
 ---
 
 ## 💖 Author
 
-Created by **Global Academy Students during OOP class**.
+Created by **Global Academy Students** during OOP class.
