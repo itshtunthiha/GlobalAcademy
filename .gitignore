@@ -1,8 +1,8 @@
 # Maven build artifacts
-# /webservice/target/
+/webservice/target/
 
 # Java class files
-# *.class
+*.class
 
 # Temporary or backup files
 *.log
