@@ -14,7 +14,7 @@ This project features:
 
 ## 📸 Preview / Screenshot
 
-![NONG MALI Preview](webservice/src/main/resources/public/imgs/bunny.png)
+![NONG MALI Preview](preview.png)
 
 ---
 
