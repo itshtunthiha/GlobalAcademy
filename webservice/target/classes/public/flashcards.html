@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flashcards - NONG MALI</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Canva Sans', 'Bricolage Grotesque', sans-serif;
+        }
+
+        body {
+            background: #fbf3eb;
+            min-height: 100vh;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000;
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        a.login-btn {
+            background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+
+        a.login-btn:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        a.logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        a.logout-btn:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .title-section {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .title-section h1 {
+            font-size: 48px;
+            font-weight: 800;
+            color: #3a2b23;
+        }
+
+        .title-section p {
+            font-size: 20px;
+            margin-top: 12px;
+            color: #7c665c;
+        }
+
+        .flashcard-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 40px;
+            margin-top: 60px;
+            padding-bottom: 80px;
+        }
+
+        .card {
+            width: 260px;
+            height: 360px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.7s;
+            transform-style: preserve-3d;
+        }
+
+        .card.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            background: #fff;
+            border-radius: 26px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .front-text {
+            font-size: 42px;
+            color: #3a2b23;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .click-text {
+            margin-top: 18px;
+            color: #8a6d63;
+            font-size: 16px;
+        }
+
+        .card-back {
+            background: #35c9d1;
+            color: white;
+            transform: rotateY(180deg);
+            font-size: 34px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">NONG MALI</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="flashcards.html">Play game</a></li>
+            <li><a href="login.html" class="login-btn" id="authBtn">Login</a></li>
+        </ul>
+    </nav>
+
+    <div class="title-section">
+        <h1>Try Our Flashcards</h1>
+        <p>Click on any card to flip it and see the translation!</p>
+    </div>
+
+    <div class="flashcard-container" id="flashcardContainer"></div>
+
+    <script>
+        const token = localStorage.getItem("token");
+        if (!token) window.location.href = "login.html";
+
+        function createCard(front, back) {
+            return `
+                <div class="card">
+                    <div class="card-inner">
+                        <div class="card-face card-front">
+                            <div class="front-text">${front}</div>
+                            <div class="click-text">Click to flip</div>
+                        </div>
+                        <div class="card-face card-back">${back}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const container = document.getElementById("flashcardContainer");
+
+        function enableFlip() {
+            document.querySelectorAll(".card").forEach(card => {
+                card.onclick = () => card.classList.toggle("flipped");
+            });
+        }
+
+        async function loadDefaultCards() {
+            const res = await fetch("http://localhost:8080/flashcards/default", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            const cards = await res.json();
+            cards.forEach(c => {
+                container.innerHTML += createCard(c.front, c.back);
+            });
+
+            enableFlip();
+        }
+
+        // Load ONLY the default cards
+        loadDefaultCards();
+
+        const username = localStorage.getItem("username");
+        const authBtn = document.getElementById("authBtn");
+
+        if (username) {
+            authBtn.textContent = "Logout";
+            authBtn.classList.add('logout-btn');
+            authBtn.onclick = () => {
+                localStorage.clear();
+                window.location.href = "login.html";
+            };
+        } else {
+            authBtn.textContent = 'Login';
+            authBtn.classList.remove('logout-btn');
+        }
+    </script>
+</body>
+</html>

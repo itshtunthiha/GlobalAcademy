@@ -1,0 +1,8 @@
+org/global/academy/UseCard.class
+org/global/academy/IntegerResponse.class
+org/global/academy/ThaiConsonantFlashcard.class
+org/global/academy/Flashcard.class
+org/global/academy/Server$ErrorResponse.class
+org/global/academy/Server.class
+org/global/academy/Server$LoginResponse.class
+org/global/academy/Server$LoginRequest.class

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NONG MALI - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Canva Sans', Bricolage Grotesque , sans-serif;
+            background: linear-gradient(135deg, #f8eee6 0%, #f8eee6 50%, #ffbde9 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: transparent;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #b41f7d;
+        }
+
+        a.login-btn {
+            background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+
+        a.login-btn:hover {
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        a.logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        a.logout-btn:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 80px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            font-weight: 800;
+            color: #000000;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .hero-content .highlight {
+            display: block;
+            font-size: 72px;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: #000000;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .username-display {
+            font-weight: 700;
+            color: #a855f7;
+            font-size: 22px;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .bunny-character {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 60px 40px;
+            }
+
+            .hero-content h1 {
+                font-size: 48px;
+            }
+
+            .hero-content .highlight {
+                font-size: 56px;
+            }
+
+            nav {
+                padding: 20px 40px;
+            }
+
+            .nav-links {
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 20px;
+                padding: 20px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+
+            .hero-content .highlight {
+                font-size: 42px;
+            }
+
+            .hero-content p {
+                font-size: 18px;
+            }
+
+            .bunny-character {
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">NONG MALI</div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="flashcards.html">Play game</a></li>
+            <li><a href="#" class="login-btn logout-btn" id="authBtn">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>
+                Welcome to
+                <span class="highlight">NONG MALI</span>
+            </h1>
+            <p>
+                <span id="welcomeMessage">Learn Thai the fun way with interactive flashcards! Join Nong-Mali on an exciting language learning adventure.</span>
+            </p>
+            <a href="flashcards.html" class="login-btn">Start Learning</a>
+        </div>
+
+        <div class="hero-image">
+            <img src="imgs/bunny.png" alt="Cute Bunny Character" class="bunny-character">
+        </div>
+    </div>
+
+    <script>
+        // Check if user is logged in
+        const username = localStorage.getItem('username');
+        const authBtn = document.getElementById('authBtn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        if (username) {
+            authBtn.textContent = 'Logout';
+            authBtn.classList.add('logout-btn');
+            welcomeMessage.innerHTML = `Welcome back, <span class="username-display">${username}</span>! Ready to continue your Thai learning journey?`;
+            authBtn.onclick = logout;
+        } else {
+            authBtn.textContent = 'Login';
+            authBtn.classList.remove('logout-btn');
+            authBtn.onclick = () => window.location.href = 'login.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('token');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
