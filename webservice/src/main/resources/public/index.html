@@ -2,10 +2,323 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; URL='/welcome.html'" />
-    <title>Redirecting...</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NONG MALI - Welcome</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Canva Sans', Bricolage Grotesque, sans-serif;
+            background: linear-gradient(135deg, #f8eee6 0%, #f8eee6 50%, #ffbde9 100%);
+            min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 60px;
+            background: transparent;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: #000000;
+            letter-spacing: 1px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 18px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: #b41f7d;
+        }
+
+        a.login-btn {
+            background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
+            color: white !important;
+            padding: 12px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3);
+        }
+
+        a.login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
+        }
+
+        a.logout-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        a.logout-btn:hover {
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 80px 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            gap: 60px;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: 64px;
+            font-weight: 800;
+            color: #000000;
+            line-height: 1.2;
+            margin-bottom: 30px;
+        }
+
+        .hero-content .highlight {
+            display: block;
+            font-size: 72px;
+        }
+
+        .hero-content p {
+            font-size: 20px;
+            color: #000000;
+            line-height: 1.6;
+            margin-bottom: 40px;
+        }
+
+        .username-display {
+            font-weight: 700;
+            color: #a855f7;
+            font-size: 22px;
+        }
+
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .bunny-character {
+            width: 100%;
+            max-width: 450px;
+            height: auto;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.1));
+        }
+
+        /* Responsive: Tablet */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 60px 40px;
+            }
+            .hero-content h1 {
+                font-size: 48px;
+            }
+            .hero-content .highlight {
+                font-size: 56px;
+            }
+            nav {
+                padding: 20px 40px;
+            }
+            .nav-links {
+                gap: 20px;
+            }
+        }
+
+        /* -------------------------------------------------
+           MOBILE HAMBURGER MENU (Only affects < 768px)
+           ------------------------------------------------- */
+        @media (max-width: 768px) {
+
+            /* hide the desktop nav */
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                right: 20px;
+                background: white;
+                padding: 20px;
+                border-radius: 20px;
+                flex-direction: column;
+                gap: 20px;
+                list-style: none;
+                width: 180px;
+                display: none;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 18px;
+                color: #000;
+            }
+
+            /* Hamburger Icon */
+            .hamburger {
+                width: 32px;
+                height: 26px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                cursor: pointer;
+            }
+
+            .hamburger span {
+                height: 4px;
+                width: 100%;
+                background: #000;
+                border-radius: 5px;
+                transition: 0.3s ease;
+            }
+
+            /* Transform when active */
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(10px) rotate(45deg);
+            }
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+
+            nav {
+                padding: 20px;
+                justify-content: space-between;
+            }
+
+            .hero-content h1 {
+                font-size: 36px;
+            }
+            .hero-content .highlight {
+                font-size: 42px;
+            }
+            .hero-content p {
+                font-size: 18px;
+            }
+            .bunny-character {
+                max-width: 300px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <p>If you are not redirected automatically, <a href="/welcome.html">click here</a>.</p>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">NONG MALI</div>
+
+        <!-- Hamburger Button -->
+        <div class="hamburger" id="hamburgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="flashcards.html">Play game</a></li>
+            <li><a href="#" class="login-btn logout-btn" id="authBtn">Login</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>
+                Welcome to
+                <span class="highlight">NONG MALI</span>
+            </h1>
+            <p>
+                <span id="welcomeMessage">
+                    Learn Thai the fun way with interactive flashcards!
+                </span>
+            </p>
+            <a href="flashcards.html" class="login-btn">Start Learning</a>
+        </div>
+
+        <div class="hero-image">
+            <img src="imgs/bunny.png" alt="Cute Bunny Character" class="bunny-character">
+        </div>
+    </div>
+
+    <!-- Authentication Script -->
+    <script>
+        const username = localStorage.getItem('username');
+        const authBtn = document.getElementById('authBtn');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        if (username) {
+            authBtn.textContent = 'Logout';
+            authBtn.classList.add('logout-btn');
+            welcomeMessage.innerHTML =
+                `Welcome back, <span class="username-display">${username}</span>! Ready to continue your Thai learning journey?`;
+            authBtn.onclick = logout;
+        } else {
+            authBtn.textContent = 'Login';
+            authBtn.classList.remove('logout-btn');
+            authBtn.onclick = () => window.location.href = 'login.html';
+        }
+
+        function logout() {
+            localStorage.removeItem('username');
+            localStorage.removeItem('token');
+            window.location.reload();
+        }
+
+        // Mobile Hamburger Script
+        const hamburger = document.getElementById("hamburgerMenu");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+        });
+    </script>
+
 </body>
 </html>
