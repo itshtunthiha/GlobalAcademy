@@ -5,6 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="css/index-style.css">
+    <style>
+        /* Error message style */
+        .error-message {
+            display: none;
+            color: #ff4d4f; /* Red */
+            margin-top: 10px;
+            font-weight: bold;
+            animation: shake 0.3s ease;
+        }
+
+        /* Shake animation */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-5px); }
+            40% { transform: translateX(5px); }
+            60% { transform: translateX(-5px); }
+            80% { transform: translateX(5px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Trigger animation dynamically */
+        .error-message.show {
+            display: block;
+            animation: shake 0.3s ease;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,11 +65,14 @@
     </div>
 
     <script>
-        document.getElementById("loginForm").addEventListener("submit", function(e) {
+        const loginForm = document.getElementById("loginForm");
+        const errorMessage = document.getElementById("errorMessage");
+
+        loginForm.addEventListener("submit", function(e) {
             e.preventDefault();
 
-            const errorMessage = document.getElementById("errorMessage");
-            errorMessage.style.display = "none";
+            // Hide previous error
+            errorMessage.classList.remove("show");
 
             const data = {
                 username: document.getElementById("username").value.trim(),
@@ -59,8 +88,12 @@
                 let body = await res.json();
 
                 if (res.status === 401) {
-                    errorMessage.textContent = body.error || "Invalid login";
-                    errorMessage.style.display = "block";
+                    errorMessage.textContent = body.error || "Invalid username or password";
+                    
+                    // Trigger shake animation
+                    errorMessage.classList.remove("show"); // reset animation
+                    void errorMessage.offsetWidth; // force reflow
+                    errorMessage.classList.add("show");
                     return;
                 }
 
@@ -72,7 +105,9 @@
             .catch(err => {
                 console.error("Fetch error:", err);
                 errorMessage.textContent = "Network error. Try again.";
-                errorMessage.style.display = "block";
+                errorMessage.classList.remove("show");
+                void errorMessage.offsetWidth;
+                errorMessage.classList.add("show");
             });
         });
     </script>
