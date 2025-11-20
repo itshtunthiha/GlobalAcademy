@@ -1,20 +1,25 @@
 # Use the Eclipse Temurin JDK Alpine image
 FROM eclipse-temurin:21-jdk-alpine
 
-# Set the working directory to the webservice folder
+# Install bash and any necessary tools
+RUN apk add --no-cache bash
+
+# Set working directory
 WORKDIR /app/webservice
 
-# Copy the webservice folder contents into the container
-COPY webservice/ ./ 
+# Copy the webservice folder into container
+COPY webservice/ ./
 
-# Make mvnw executable
+# Copy start.sh if needed
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
+
+# Make mvnw executable and run with bash
 RUN chmod +x mvnw
+RUN bash mvnw -B -DskipTests clean install
 
-# Build the app with Maven
-RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
-
-# Expose default Spark/HTTP port
-EXPOSE 8080
+# Expose Spark/HTTP port
+EXPOSE 4567
 
 # Run the app
-CMD ["sh", "-c", "java -jar target/*.jar"]
+CMD ["bash", "-c", "java -jar target/*.jar"]
