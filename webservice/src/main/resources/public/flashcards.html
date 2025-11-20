@@ -198,7 +198,7 @@
         }
 
         async function loadDefaultCards() {
-            const res = await fetch("http://localhost:8080/flashcards/default", {
+            const res = await fetch("/flashcards/default", {
                 headers: { "Authorization": "Bearer " + token }
             });
 
