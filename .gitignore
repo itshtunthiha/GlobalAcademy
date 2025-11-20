@@ -1,0 +1,10 @@
+# Maven build artifacts
+/webservice/target/
+
+# Java class files
+*.class
+
+# Temporary or backup files
+*.log
+*.tmp
+# *.bak
