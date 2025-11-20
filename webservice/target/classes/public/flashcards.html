@@ -23,6 +23,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 30px 60px;
+            position: relative;
         }
 
         .logo {
@@ -46,7 +47,7 @@
 
         a.login-btn {
             background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
-            color: white;
+            color: white !important;
             padding: 12px 32px;
             border-radius: 50px;
             text-decoration: none;
@@ -57,7 +58,6 @@
         }
 
         a.login-btn:hover {
-            color: white;
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(168, 85, 247, 0.4);
         }
@@ -151,11 +151,116 @@
             font-size: 34px;
             font-weight: 700;
         }
+
+        /* ------------------------------
+           MOBILE RESPONSIVE < 768px
+        ------------------------------ */
+        @media (max-width: 768px) {
+
+            /* Hamburger */
+            .hamburger {
+                width: 32px;
+                height: 26px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                cursor: pointer;
+            }
+
+            .hamburger span {
+                height: 4px;
+                width: 100%;
+                background: #000;
+                border-radius: 5px;
+                transition: 0.3s ease;
+            }
+
+            .hamburger.active span:nth-child(1) {
+                transform: translateY(10px) rotate(45deg);
+            }
+            .hamburger.active span:nth-child(2) {
+                opacity: 0;
+            }
+            .hamburger.active span:nth-child(3) {
+                transform: translateY(-10px) rotate(-45deg);
+            }
+
+            nav {
+                padding: 20px;
+                justify-content: space-between;
+            }
+
+            /* Mobile nav links */
+            .nav-links {
+                position: absolute;
+                top: 80px;
+                right: 20px;
+                background: white;
+                padding: 20px;
+                border-radius: 20px;
+                flex-direction: column;
+                gap: 20px;
+                list-style: none;
+                width: 180px;
+                display: none;
+                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                z-index: 999;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links a {
+                font-size: 18px;
+                color: #000;
+            }
+
+            /* Keep logout text white */
+            .nav-links a.logout-btn {
+                color: white !important;
+            }
+
+            /* Flashcards container */
+            .flashcard-container {
+                gap: 20px;
+                margin-top: 40px;
+            }
+
+            .card {
+                width: 200px;
+                height: 280px;
+            }
+
+            .front-text {
+                font-size: 32px;
+            }
+
+            .card-back {
+                font-size: 26px;
+            }
+
+            .title-section h1 {
+                font-size: 32px;
+            }
+
+            .title-section p {
+                font-size: 16px;
+            }
+        }
     </style>
 </head>
 <body>
     <nav>
         <div class="logo">NONG MALI</div>
+
+        <!-- Hamburger -->
+        <div class="hamburger" id="hamburgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
         <ul class="nav-links">
             <li><a href="index.html">Home</a></li>
             <li><a href="about.html">About</a></li>
@@ -210,7 +315,6 @@
             enableFlip();
         }
 
-        // Load ONLY the default cards
         loadDefaultCards();
 
         const username = localStorage.getItem("username");
@@ -227,6 +331,15 @@
             authBtn.textContent = 'Login';
             authBtn.classList.remove('logout-btn');
         }
+
+        // Hamburger toggle
+        const hamburger = document.getElementById("hamburgerMenu");
+        const navLinks = document.querySelector(".nav-links");
+
+        hamburger.addEventListener("click", () => {
+            hamburger.classList.toggle("active");
+            navLinks.classList.toggle("active");
+        });
     </script>
 </body>
 </html>

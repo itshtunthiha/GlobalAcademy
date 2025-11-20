@@ -15,12 +15,12 @@
 
         <form id="loginForm" class="login-form">
             <div class="input-group">
-                <img class="icon" width="24px" src="icons/inbox-icon.svg" alt="Email Icon">
+                <img class="icon" src="icons/inbox-icon.svg" alt="Email Icon">
                 <input type="text" id="username" placeholder="Username or email address" aria-label="Email address">
             </div>
 
             <div class="input-group">
-                <img class="icon" width="24px" src="icons/password-icon.svg" alt="Password Icon">
+                <img class="icon" src="icons/password-icon.svg" alt="Password Icon">
                 <input type="password" id="password" placeholder="Enter password" aria-label="Password">
             </div>
 
@@ -32,8 +32,7 @@
                 Forgot Password? <a href="#">Click Here</a>
             </p>
 
-            <!-- Error message -->
-            <p id="errorMessage" style="color:red; text-align:center; margin-top:10px; display:none;">
+            <p id="errorMessage" class="error-message">
                 Invalid username or password
             </p>
         </form>
@@ -65,11 +64,9 @@
                     return;
                 }
 
-                // Success: save token + username
                 localStorage.setItem("token", body.token);
                 localStorage.setItem("username", body.username);
 
-                // Redirect
                 window.location.href = "welcome.html";
             })
             .catch(err => {

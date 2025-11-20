@@ -88,3 +88,65 @@ body {
     text-decoration: none;
     font-weight: bold;
 }
+/* ============================
+   MOBILE RESPONSIVE FIXES
+   ============================ */
+   @media (max-width: 600px) {
+
+    body {
+        padding: 0 20px;
+        overflow-x: hidden;
+    }
+
+    .login-container {
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .mascot-image {
+        width: 150px;
+        height: auto;
+    }
+
+    .login-form {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .input-group {
+        width: 100%;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        box-sizing: border-box;      /* ⭐ prevents overflow */
+        overflow: hidden;            /* ⭐ prevents any extra stretching */
+    }
+
+    .input-group input {
+        width: 100%;
+        max-width: 100%;
+        flex: 1;
+        font-size: 16px;
+        box-sizing: border-box;
+    }
+
+    .input-group .icon {
+        flex-shrink: 0;              /* ⭐ icon will NOT stretch the field */
+    }
+
+    .login-button {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    .forgot-password {
+        text-align: center;
+        font-size: 12px;
+    }
+}
