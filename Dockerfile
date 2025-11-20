@@ -7,15 +7,14 @@ WORKDIR /app/webservice
 # Copy the webservice folder contents into the container
 COPY webservice/ ./ 
 
-# Copy the start.sh if needed
-COPY start.sh /app/start.sh
-RUN chmod +x /app/start.sh
+# Make mvnw executable
+RUN chmod +x mvnw
 
 # Build the app with Maven
 RUN ./mvnw -DoutputFile=target/mvn-dependency-list.log -B -DskipTests clean dependency:list install
 
-# Expose default Spark/HTTP port if needed
-EXPOSE 4567
+# Expose default Spark/HTTP port
+EXPOSE 8080
 
-# Run the app (finds the JAR inside target folder)
+# Run the app
 CMD ["sh", "-c", "java -jar target/*.jar"]
