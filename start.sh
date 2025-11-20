@@ -10,3 +10,5 @@
 # java -cp target/spark-hello-1.0-SNAPSHOT-jar-with-dependencies.jar org.global.academy.Server
 # java -jar target/spark-hello-1.0-SNAPSHOT-jar-with-dependencies.jar
 
+#!/bin/bash
+java -jar webservice/target/spark-hello-1.0-SNAPSHOT-jar-with-dependencies.jar
