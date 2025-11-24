@@ -19,9 +19,9 @@ public class Server {
         // ⚡ Faster server thread pool
         threadPool(40, 5, 30000);
 
-        // ⚡ Cache static files for 30 days
+        // ⚡ Cache static files for 1 day
         staticFiles.location("/public");
-        staticFiles.expireTime(3600 * 24 * 30);
+        staticFiles.expireTime(3600 * 24 * 1);
 
         // Allow GZIP
         after((req, res) -> res.header("Content-Encoding", "gzip"));
