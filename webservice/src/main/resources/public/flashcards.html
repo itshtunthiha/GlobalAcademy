@@ -137,6 +137,25 @@
             font-weight: 700;
             text-align: center;
             line-height: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .speaker-icon {
+            width: 24px;
+            height: 24px;
+            cursor: pointer;
+            fill: #8a6d63;
+            transition: transform 0.2s ease, fill 0.2s ease;
+            opacity: 0.6;
+        }
+
+        .speaker-icon:hover {
+            transform: scale(1.2);
+            fill: #b41f7d;
+            opacity: 1;
         }
 
         .pronunciation-text {
@@ -341,6 +360,8 @@
             font-size: 16px;
             padding: 12px 32px;
             font-weight: 600;
+            margin-left: 15px;
+            margin-right: 15px;
         }
 
         .clear-btn:hover {
@@ -352,7 +373,6 @@
             background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
             color: white;
             box-shadow: 0 4px 15px rgba(180, 31, 125, 0.3);
-            margin-left: 15px;
         }
 
         .next-btn:hover {
@@ -413,6 +433,178 @@
             50% {
                 transform: translateY(-20px);
             }
+        }
+
+        /* Confetti Animation */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #f0f;
+            top: -10px;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                top: -10%;
+                opacity: 1;
+            }
+
+            100% {
+                top: 100%;
+                opacity: 0;
+            }
+        }
+
+        .message-container.celebrating {
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .celebration-text {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f7b731, #5f27cd);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 3s ease infinite;
+        }
+
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Swipe Animations - REMOVED to prevent conflicts with drag gestures */
+
+        /* Previous Button */
+        .prev-btn {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(75, 85, 99, 0.3);
+            display: none;
+            /* Hidden by default */
+            font-size: 16px;
+            padding: 12px 32px;
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .prev-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(75, 85, 99, 0.4);
+        }
+
+        .prev-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .review-mode .prev-btn {
+            display: inline-block;
+        }
+
+        /* Draggable Card Styles */
+        .card.dragging {
+            transition: none !important;
+            /* Disable transition while dragging for instant response */
+            cursor: grabbing;
+            transform-origin: center center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            z-index: 100;
+            /* Ensure dragged card is on top */
+        }
+
+        /* Card Navigation Animations */
+        @keyframes slideOutLeft {
+            to {
+                transform: translateX(-120%) rotate(-20deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideOutRight {
+            to {
+                transform: translateX(120%) rotate(20deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-120%) rotate(-20deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(120%) rotate(20deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        .card.slide-out-left {
+            animation: slideOutLeft 0.4s ease-in forwards;
+        }
+
+        .card.slide-out-right {
+            animation: slideOutRight 0.4s ease-in forwards;
+        }
+
+        .card.slide-in-left {
+            animation: slideInLeft 0.4s ease-out forwards;
+        }
+
+        .card.slide-in-right {
+            animation: slideInRight 0.4s ease-out forwards;
         }
 
         /* Modal Styles */
@@ -558,6 +750,7 @@
     <div class="flashcard-container" id="flashcardContainer"></div>
 
     <div class="button-container">
+        <button class="prev-btn" id="prevBtn">Previous</button>
         <button class="clear-btn" id="clearBtn">Clear Progress</button>
         <button class="next-btn" id="nextBtn">Next Card</button>
     </div>
@@ -587,19 +780,34 @@
 
         // DOM elements
         const container = document.getElementById("flashcardContainer");
+        const nextBtn = document.getElementById("nextBtn");
+        const prevBtn = document.getElementById("prevBtn");
+        const clearBtn = document.getElementById("clearBtn");
         const messageContainer = document.getElementById("messageContainer");
         const progressText = document.getElementById("progressText");
-        const nextBtn = document.getElementById("nextBtn");
-        const clearBtn = document.getElementById("clearBtn");
         const modeToggleBtn = document.getElementById("modeToggleBtn");
         const subtitle = document.getElementById("subtitle");
+        const progressContainer = document.getElementById("progressContainer");
+
+
+        function speakText(event, text) {
+            event.stopPropagation(); // Prevent card flip
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'th-TH'; // Thai language
+            window.speechSynthesis.speak(utterance);
+        }
 
         function createCard(front, back, pronunciation) {
             return `
-                <div class="card" onclick="this.classList.toggle('flipped')">
+                <div class="card">
                     <div class="card-inner">
                         <div class="card-face card-front">
-                            <div class="front-text">${front}</div>
+                            <div class="front-text">
+                                ${front}
+                                <svg class="speaker-icon" data-text="${front}" viewBox="0 0 24 24">
+                                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                                </svg>
+                            </div>
                             <div class="pronunciation-text">${pronunciation || ''}</div>
                             <div class="click-text">Click to flip</div>
                         </div>
@@ -619,6 +827,38 @@
             container.innerHTML = '';
             cards.forEach(c => {
                 container.innerHTML += createCard(c.front, c.back, c.pronunciation);
+            });
+
+            // Add click listeners for card flipping in View All mode
+            attachCardFlipListeners();
+        }
+
+        // Attach click listeners to flip cards (for View All mode)
+        function attachCardFlipListeners() {
+            const cards = container.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', (e) => {
+                    // Don't flip if clicking on the speaker icon or its path
+                    if (e.target.closest('.speaker-icon')) {
+                        e.stopPropagation();
+                        return;
+                    }
+                    card.classList.toggle('flipped');
+                });
+            });
+
+            // Add speaker icon click handlers
+            const speakerIcons = container.querySelectorAll('.speaker-icon');
+            speakerIcons.forEach(icon => {
+                icon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const text = icon.getAttribute('data-text');
+                    if (text) {
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'th-TH';
+                        window.speechSynthesis.speak(utterance);
+                    }
+                });
             });
         }
 
@@ -644,38 +884,123 @@
             }
 
             currentBatchIndex = 0;
-            showCurrentCard();
+            showCurrentCard('next');
         }
 
-        function showCurrentCard() {
+        function showCurrentCard(direction = 'next', animate = false) {
             if (currentBatchIndex >= currentBatch.length) {
                 loadNextBatch();
                 return;
             }
 
             const card = currentBatch[currentBatchIndex];
-            container.innerHTML = createCard(card.front, card.back, card.pronunciation);
+            const cardHTML = createCard(card.front, card.back, card.pronunciation);
+
+            // Simply replace the card without animations to avoid conflicts with drag gestures
+            container.innerHTML = cardHTML;
+
+            // Apply enter animation if requested
+            if (animate) {
+                const newCard = container.querySelector('.card');
+                if (newCard) {
+                    if (direction === 'next') {
+                        newCard.classList.add('slide-in-right');
+                    } else if (direction === 'prev') {
+                        newCard.classList.add('slide-in-left');
+                    }
+                }
+            }
+
+            // Add speaker icon click handler for Review Mode
+            const speakerIcon = container.querySelector('.speaker-icon');
+            if (speakerIcon) {
+                speakerIcon.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const text = speakerIcon.getAttribute('data-text');
+                    if (text) {
+                        const utterance = new SpeechSynthesisUtterance(text);
+                        utterance.lang = 'th-TH';
+                        window.speechSynthesis.speak(utterance);
+                    }
+                });
+            }
 
             let currentProgress = totalReviewed + currentBatchIndex;
             progressText.textContent = `${currentProgress} / ${totalCount}`;
+            progressContainer.style.display = "block";
 
-            nextBtn.style.display = "inline-block";
-            updateClearButton();
+            updateButtons();
+        }
+
+        function updateButtons() {
+            // Enable/Disable Previous button
+            prevBtn.disabled = currentBatchIndex === 0;
+
+            // Show/Hide Clear button (only show if progress > 0)
+            if (totalReviewed + currentBatchIndex > 0) {
+                clearBtn.style.display = "inline-block";
+            } else {
+                clearBtn.style.display = "none";
+            }
         }
 
         function showCompletion() {
-            container.innerHTML = "";
-            nextBtn.style.display = "none";
-            progressText.textContent = `${totalCount} / ${totalCount}`;
-            messageContainer.innerHTML = '<span class="completion-emoji">🎉</span>You have mastered all the cards!';
+            container.innerHTML = '';
+            progressContainer.style.display = "none";
             messageContainer.style.display = "block";
+            messageContainer.classList.add('celebrating');
+            messageContainer.innerHTML = `
+                <span class="completion-emoji">🎉</span>
+                <div class="celebration-text">Congratulations!</div>
+                <div style="font-size: 20px; margin-top: 15px; color: #7c665c;">You've reviewed all your flashcards!</div>
+            `;
+            nextBtn.style.display = "none";
+            prevBtn.style.display = "none";
             clearBtn.style.display = "inline-block";
+
+            // Trigger confetti animation
+            createConfetti();
         }
 
-        function updateClearButton() {
-            if (totalReviewed > 0 || currentBatchIndex > 0) {
-                clearBtn.style.display = "inline-block";
+        function createConfetti() {
+            // Create confetti container if it doesn't exist
+            let confettiContainer = document.querySelector('.confetti-container');
+            if (!confettiContainer) {
+                confettiContainer = document.createElement('div');
+                confettiContainer.className = 'confetti-container';
+                document.body.appendChild(confettiContainer);
             }
+
+            const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#f7b731', '#5f27cd', '#ff9ff3', '#54a0ff', '#48dbfb'];
+            const confettiCount = 100;
+
+            for (let i = 0; i < confettiCount; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.width = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.height = (Math.random() * 10 + 5) + 'px';
+                    confetti.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+                    confetti.style.animation = `confetti-fall ${Math.random() * 3 + 2}s linear forwards`;
+                    confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+                    confettiContainer.appendChild(confetti);
+
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 5000);
+                }, i * 30);
+            }
+
+            // Remove container after all confetti is done
+            setTimeout(() => {
+                if (confettiContainer && confettiContainer.children.length === 0) {
+                    confettiContainer.remove();
+                }
+            }, 8000);
         }
 
         // Mode Toggle
@@ -685,13 +1010,24 @@
 
             if (isReviewMode) {
                 modeToggleBtn.textContent = "Switch to View All";
-                subtitle.textContent = "Learn new words one by one!";
+                modeToggleBtn.classList.add('active');
+                subtitle.textContent = "Review Mode: One by one";
                 messageContainer.style.display = "none";
+
+                // Reset inline styles so CSS classes can control visibility
+                nextBtn.style.display = "";
+                prevBtn.style.display = "";
+                clearBtn.style.display = "";
+
                 loadNextBatch();
             } else {
                 modeToggleBtn.textContent = "Switch to Review Mode";
-                subtitle.textContent = "Click on any card to flip it and see the translation!";
+                modeToggleBtn.classList.remove('active');
+                subtitle.textContent = "Master your Thai vocabulary";
+                progressContainer.style.display = "none";
                 messageContainer.style.display = "none";
+                nextBtn.style.display = "none";
+                prevBtn.style.display = "none";
                 clearBtn.style.display = "none";
                 loadDefaultCards();
             }
@@ -699,21 +1035,49 @@
 
         // Next button
         nextBtn.onclick = async () => {
-            // Mark current card as reviewed before moving to next
-            if (currentBatchIndex < currentBatch.length) {
-                const currentCard = currentBatch[currentBatchIndex];
-                await fetch("/flashcards/mark_reviewed", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": "Bearer " + token,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ cardFront: currentCard.front })
-                });
-            }
+            if (currentBatchIndex >= currentBatch.length) return;
 
-            currentBatchIndex++;
-            showCurrentCard();
+            // Mark current card as reviewed
+            const currentCard = currentBatch[currentBatchIndex];
+            // We don't await this to keep UI responsive, but we should probably handle errors if needed
+            fetch("/flashcards/mark_reviewed", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer " + token,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ cardFront: currentCard.front })
+            });
+
+            const cardElement = container.querySelector('.card');
+            if (cardElement) {
+                cardElement.classList.add('slide-out-left');
+                // Wait for animation
+                setTimeout(() => {
+                    currentBatchIndex++;
+                    showCurrentCard('next', true);
+                }, 300); // Slightly less than animation duration to feel snappy
+            } else {
+                currentBatchIndex++;
+                showCurrentCard('next', true);
+            }
+        };
+
+        // Previous button
+        prevBtn.onclick = () => {
+            if (currentBatchIndex > 0) {
+                const cardElement = container.querySelector('.card');
+                if (cardElement) {
+                    cardElement.classList.add('slide-out-right');
+                    setTimeout(() => {
+                        currentBatchIndex--;
+                        showCurrentCard('prev', true);
+                    }, 300);
+                } else {
+                    currentBatchIndex--;
+                    showCurrentCard('prev', true);
+                }
+            }
         };
 
         // Clear Progress button
@@ -782,7 +1146,160 @@
             hamburger.classList.toggle("active");
             navLinks.classList.toggle("active");
         });
+
+        // Keyboard Navigation
+        document.addEventListener('keydown', (e) => {
+            if (!isReviewMode) return;
+
+            // Space or Enter to flip card
+            if ((e.code === 'Space' || e.code === 'Enter') && !document.getElementById('confirmModal').classList.contains('active')) {
+                e.preventDefault(); // Prevent scrolling
+                const card = document.querySelector('.card');
+                if (card) card.classList.toggle('flipped');
+            }
+
+            // Right Arrow for Next Card
+            if (e.code === 'ArrowRight' && !document.getElementById('confirmModal').classList.contains('active')) {
+                nextBtn.click();
+            }
+
+            // Left Arrow for Previous Card
+            if (e.code === 'ArrowLeft' && !document.getElementById('confirmModal').classList.contains('active')) {
+                if (!prevBtn.disabled) prevBtn.click();
+            }
+
+            // Escape to close modal
+            if (e.code === 'Escape') {
+                document.getElementById('confirmModal').classList.remove('active');
+            }
+        });
+
+        // Swipe & Drag Gestures (Interactive Tinder-style)
+        let startX = 0;
+        let currentX = 0;
+        let isDragging = false;
+        let cardElement = null;
+        let dragStartTime = 0;
+
+        // Touch Events
+        container.addEventListener('touchstart', (e) => {
+            if (!isReviewMode) return;
+            // Don't start drag if touching speaker icon
+            if (e.target.closest('.speaker-icon')) return;
+            startDrag(e.touches[0].clientX);
+        }, { passive: false });
+
+        container.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault(); // Prevent scrolling while dragging
+            moveDrag(e.touches[0].clientX);
+        }, { passive: false });
+
+        container.addEventListener('touchend', (e) => {
+            if (!isDragging) return;
+            endDrag();
+        });
+
+        // Mouse Events
+        container.addEventListener('mousedown', (e) => {
+            if (!isReviewMode) return;
+            // Don't start drag if clicking speaker icon
+            if (e.target.closest('.speaker-icon')) return;
+            e.preventDefault(); // Prevent text selection
+            startDrag(e.clientX);
+        });
+
+        container.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            moveDrag(e.clientX);
+        });
+
+        container.addEventListener('mouseup', (e) => {
+            if (!isDragging) return;
+            endDrag();
+        });
+
+        container.addEventListener('mouseleave', () => {
+            if (isDragging) endDrag();
+        });
+
+        function startDrag(x) {
+            // Find the card element
+            cardElement = container.querySelector('.card');
+
+            if (!cardElement) return;
+
+            isDragging = true;
+            startX = x;
+            currentX = x;
+            dragStartTime = Date.now();
+
+            // Add dragging class for visual feedback
+            cardElement.classList.add('dragging');
+        }
+
+        function moveDrag(x) {
+            if (!cardElement) return;
+            currentX = x;
+            const diffX = currentX - startX;
+            const rotation = diffX * 0.1; // Rotate slightly based on drag distance
+
+            cardElement.style.transform = `translateX(${diffX}px) rotate(${rotation}deg) scale(1.05)`;
+        }
+
+        function endDrag() {
+            if (!cardElement) return;
+            isDragging = false;
+            cardElement.classList.remove('dragging');
+
+            const diffX = currentX - startX;
+            const threshold = 100; // Drag threshold to trigger action
+            const dragDuration = Date.now() - dragStartTime;
+
+            // If drag was very short and quick, treat as click (flip)
+            if (Math.abs(diffX) < 10 && dragDuration < 200) {
+                cardElement.classList.toggle('flipped');
+                resetCard();
+                return;
+            }
+
+            if (diffX > threshold) {
+                // Dragged Right -> Previous
+                if (!prevBtn.disabled) {
+                    cardElement.style.transform = `translateX(1000px) rotate(30deg)`; // Fly off
+                    setTimeout(() => prevBtn.click(), 200);
+                } else {
+                    resetCard();
+                }
+            } else if (diffX < -threshold) {
+                // Dragged Left -> Next
+                cardElement.style.transform = `translateX(-1000px) rotate(-30deg)`; // Fly off
+                setTimeout(() => nextBtn.click(), 200);
+            } else {
+                // Snap back
+                resetCard();
+            }
+
+            startX = 0;
+            currentX = 0;
+        }
+
+        function resetCard() {
+            if (cardElement) {
+                // Add transition for smooth snap-back
+                cardElement.style.transition = 'transform 0.3s ease';
+                cardElement.style.transform = '';
+
+                // Remove transition after animation completes to not interfere with future drags
+                setTimeout(() => {
+                    if (cardElement) {
+                        cardElement.style.transition = '';
+                    }
+                }, 300);
+            }
+        }
     </script>
 </body>
 
 </html>
+```
