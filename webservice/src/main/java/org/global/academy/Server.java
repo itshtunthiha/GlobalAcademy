@@ -2,6 +2,13 @@ package org.global.academy;
 
 import com.google.gson.Gson;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import static spark.Spark.after;
 import static spark.Spark.before;
 import static spark.Spark.get;
@@ -35,13 +42,19 @@ public class Server {
 
         options("/*", (req, res) -> {
             String headers = req.headers("Access-Control-Request-Headers");
-            if (headers != null) res.header("Access-Control-Allow-Headers", headers);
+            if (headers != null)
+                res.header("Access-Control-Allow-Headers", headers);
 
             String method = req.headers("Access-Control-Request-Method");
-            if (method != null) res.header("Access-Control-Allow-Methods", method);
+            if (method != null)
+                res.header("Access-Control-Allow-Methods", method);
 
             return "OK";
         });
+
+        // Simple in-memory session tracking for reviewed cards
+        // Token -> Set of reviewed card fronts
+        Map<String, Set<String>> userReviewedCards = new ConcurrentHashMap<>();
 
         Gson gson = new Gson();
 
@@ -64,6 +77,51 @@ public class Server {
             Flashcard card = UseCard.getRandomCard();
             res.type("application/json");
             return gson.toJson(card);
+        });
+
+        get("/flashcards/randbatch", (req, res) -> {
+            String auth = req.headers("Authorization");
+            String token = auth.substring(7); // Remove "Bearer "
+
+            userReviewedCards.putIfAbsent(token, Collections.synchronizedSet(new HashSet<>()));
+            Set<String> reviewed = userReviewedCards.get(token);
+
+            List<Flashcard> batch = UseCard.getUnreviewedCards(reviewed, 7);
+
+            int totalCards = UseCard.getAllCards().size();
+            int reviewedCount = reviewed.size();
+
+            res.type("application/json");
+            return gson.toJson(new BatchResponse(batch, reviewedCount, totalCards));
+        });
+
+        post("/flashcards/mark_reviewed", (req, res) -> {
+            String auth = req.headers("Authorization");
+            String token = auth.substring(7); // Remove "Bearer "
+
+            userReviewedCards.putIfAbsent(token, Collections.synchronizedSet(new HashSet<>()));
+            Set<String> reviewed = userReviewedCards.get(token);
+
+            // Expect JSON body with {"cardFront": "..."}
+            com.google.gson.JsonObject body = gson.fromJson(req.body(), com.google.gson.JsonObject.class);
+            String cardFront = body.get("cardFront").getAsString();
+
+            reviewed.add(cardFront);
+
+            res.type("application/json");
+            return gson.toJson("OK");
+        });
+
+        post("/flashcards/clear_progress", (req, res) -> {
+            String auth = req.headers("Authorization");
+            String token = auth.substring(7); // Remove "Bearer "
+
+            if (userReviewedCards.containsKey(token)) {
+                userReviewedCards.get(token).clear();
+            }
+
+            res.type("application/json");
+            return gson.toJson("OK");
         });
 
         post("/login", (req, res) -> {
@@ -99,6 +157,20 @@ public class Server {
     static class ErrorResponse {
         String error;
 
-        ErrorResponse(String e) { error = e; }
+        ErrorResponse(String e) {
+            error = e;
+        }
+    }
+
+    static class BatchResponse {
+        List<Flashcard> cards;
+        int reviewedCount;
+        int totalCount;
+
+        BatchResponse(List<Flashcard> c, int r, int t) {
+            cards = c;
+            reviewedCount = r;
+            totalCount = t;
+        }
     }
 }

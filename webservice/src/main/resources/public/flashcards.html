@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -178,9 +179,11 @@
             .hamburger.active span:nth-child(1) {
                 transform: translateY(10px) rotate(45deg);
             }
+
             .hamburger.active span:nth-child(2) {
                 opacity: 0;
             }
+
             .hamburger.active span:nth-child(3) {
                 transform: translateY(-10px) rotate(-45deg);
             }
@@ -203,7 +206,7 @@
                 list-style: none;
                 width: 180px;
                 display: none;
-                box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+                box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
                 z-index: 999;
             }
 
@@ -248,8 +251,164 @@
                 font-size: 16px;
             }
         }
+
+        /* Mode Toggle Button */
+        .mode-toggle-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .mode-toggle-btn {
+            background: linear-gradient(135deg, #35c9d1 0%, #35c9d1 100%);
+            color: white;
+            padding: 12px 32px;
+            border-radius: 50px;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(53, 201, 209, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .mode-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(53, 201, 209, 0.4);
+        }
+
+        /* Review Mode Styles */
+        .review-mode .flashcard-container {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .progress-container {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 18px;
+            color: #7c665c;
+            font-weight: 600;
+            display: inline-block;
+            padding: 10px 30px;
+            border-radius: 50px;
+        }
+
+        .progress-wrapper {
+            text-align: center;
+            width: 100%;
+            display: none;
+        }
+
+        .review-mode .progress-wrapper {
+            display: block;
+        }
+
+        .next-btn,
+        .clear-btn {
+            padding: 14px 40px;
+            border-radius: 50px;
+            border: none;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(180, 31, 125, 0.3);
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(180, 31, 125, 0.4);
+        }
+
+        .clear-btn {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+            font-size: 16px;
+            padding: 12px 32px;
+            font-weight: 600;
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #b41f7d 0%, #b41f7d 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(180, 31, 125, 0.3);
+            margin-left: 15px;
+        }
+
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(180, 31, 125, 0.4);
+        }
+
+        .review-mode .next-btn {
+            display: inline-block;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .review-mode .button-container {
+            display: block;
+        }
+
+        .message-container {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 32px;
+            color: #3a2b23;
+            font-weight: 700;
+            display: none;
+            animation: fadeInScale 0.6s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .completion-emoji {
+            font-size: 64px;
+            display: block;
+            margin-bottom: 20px;
+            animation: bounce 1s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
     </style>
 </head>
+
 <body>
     <nav>
         <div class="logo">NONG MALI</div>
@@ -271,18 +430,51 @@
 
     <div class="title-section">
         <h1>Try Our Flashcards</h1>
-        <p>Click on any card to flip it and see the translation!</p>
+        <p id="subtitle">Click on any card to flip it and see the translation!</p>
+    </div>
+
+    <div class="mode-toggle-container">
+        <button class="mode-toggle-btn" id="modeToggleBtn">Switch to Review Mode</button>
+    </div>
+
+    <div class="message-container" id="messageContainer"></div>
+
+    <div class="progress-wrapper">
+        <div class="progress-container" id="progressContainer">
+            Progress: <span id="progressText">0 / 0</span>
+        </div>
     </div>
 
     <div class="flashcard-container" id="flashcardContainer"></div>
+
+    <div class="button-container">
+        <button class="clear-btn" id="clearBtn">Clear Progress</button>
+        <button class="next-btn" id="nextBtn">Next Card</button>
+    </div>
 
     <script>
         const token = localStorage.getItem("token");
         if (!token) window.location.href = "login.html";
 
+        // Mode state
+        let isReviewMode = false;
+        let currentBatch = [];
+        let currentBatchIndex = 0;
+        let totalReviewed = 0;
+        let totalCount = 0;
+
+        // DOM elements
+        const container = document.getElementById("flashcardContainer");
+        const messageContainer = document.getElementById("messageContainer");
+        const progressText = document.getElementById("progressText");
+        const nextBtn = document.getElementById("nextBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const modeToggleBtn = document.getElementById("modeToggleBtn");
+        const subtitle = document.getElementById("subtitle");
+
         function createCard(front, back) {
             return `
-                <div class="card">
+                <div class="card" onclick="this.classList.toggle('flipped')">
                     <div class="card-inner">
                         <div class="card-face card-front">
                             <div class="front-text">${front}</div>
@@ -294,29 +486,135 @@
             `;
         }
 
-        const container = document.getElementById("flashcardContainer");
-
-        function enableFlip() {
-            document.querySelectorAll(".card").forEach(card => {
-                card.onclick = () => card.classList.toggle("flipped");
-            });
-        }
-
+        // View All Mode
         async function loadDefaultCards() {
             const res = await fetch("/flashcards/default", {
                 headers: { "Authorization": "Bearer " + token }
             });
 
             const cards = await res.json();
+            container.innerHTML = '';
             cards.forEach(c => {
                 container.innerHTML += createCard(c.front, c.back);
             });
-
-            enableFlip();
         }
 
+        // Review Mode
+        async function loadNextBatch() {
+            const res = await fetch("/flashcards/randbatch", {
+                headers: { "Authorization": "Bearer " + token }
+            });
+
+            if (res.status === 401) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            const data = await res.json();
+            currentBatch = data.cards;
+            totalCount = data.totalCount;
+            totalReviewed = data.reviewedCount; // Use server's count directly
+
+            if (currentBatch.length === 0) {
+                showCompletion();
+                return;
+            }
+
+            currentBatchIndex = 0;
+            showCurrentCard();
+        }
+
+        function showCurrentCard() {
+            if (currentBatchIndex >= currentBatch.length) {
+                loadNextBatch();
+                return;
+            }
+
+            const card = currentBatch[currentBatchIndex];
+            container.innerHTML = createCard(card.front, card.back);
+
+            let currentProgress = totalReviewed + currentBatchIndex;
+            progressText.textContent = `${currentProgress} / ${totalCount}`;
+
+            nextBtn.style.display = "inline-block";
+            updateClearButton();
+        }
+
+        function showCompletion() {
+            container.innerHTML = "";
+            nextBtn.style.display = "none";
+            progressText.textContent = `${totalCount} / ${totalCount}`;
+            messageContainer.innerHTML = '<span class="completion-emoji">🎉</span>You have mastered all the cards!';
+            messageContainer.style.display = "block";
+            clearBtn.style.display = "inline-block";
+        }
+
+        function updateClearButton() {
+            if (totalReviewed > 0 || currentBatchIndex > 0) {
+                clearBtn.style.display = "inline-block";
+            }
+        }
+
+        // Mode Toggle
+        modeToggleBtn.onclick = () => {
+            isReviewMode = !isReviewMode;
+            document.body.classList.toggle('review-mode', isReviewMode);
+
+            if (isReviewMode) {
+                modeToggleBtn.textContent = "Switch to View All";
+                subtitle.textContent = "Learn new words one by one!";
+                messageContainer.style.display = "none";
+                loadNextBatch();
+            } else {
+                modeToggleBtn.textContent = "Switch to Review Mode";
+                subtitle.textContent = "Click on any card to flip it and see the translation!";
+                messageContainer.style.display = "none";
+                clearBtn.style.display = "none";
+                loadDefaultCards();
+            }
+        };
+
+        // Next button
+        nextBtn.onclick = async () => {
+            // Mark current card as reviewed before moving to next
+            if (currentBatchIndex < currentBatch.length) {
+                const currentCard = currentBatch[currentBatchIndex];
+                await fetch("/flashcards/mark_reviewed", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": "Bearer " + token,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ cardFront: currentCard.front })
+                });
+            }
+
+            currentBatchIndex++;
+            showCurrentCard();
+        };
+
+        // Clear Progress button
+        clearBtn.onclick = async () => {
+            if (confirm("Are you sure you want to clear your progress?")) {
+                await fetch("/flashcards/clear_progress", {
+                    method: "POST",
+                    headers: { "Authorization": "Bearer " + token }
+                });
+
+                currentBatch = [];
+                currentBatchIndex = 0;
+                totalReviewed = 0;
+                messageContainer.style.display = "none";
+                clearBtn.style.display = "none";
+
+                loadNextBatch();
+            }
+        };
+
+        // Initialize with View All mode
         loadDefaultCards();
 
+        // Auth button
         const username = localStorage.getItem("username");
         const authBtn = document.getElementById("authBtn");
 
@@ -342,4 +640,5 @@
         });
     </script>
 </body>
+
 </html>
