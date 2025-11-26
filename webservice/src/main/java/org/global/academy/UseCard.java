@@ -7,26 +7,26 @@ public class UseCard {
     private static List<Flashcard> cards = new ArrayList<>();
 
     static {
-        cards.add(new Flashcard("สวัสดี", "Hello"));
-        cards.add(new Flashcard("ขอบคุณ", "Thank you"));
-        cards.add(new Flashcard("ยินดีที่ได้<br>รู้จัก", "Nice to meet you"));
-        cards.add(new Flashcard("ใช่", "Yes"));
-        cards.add(new Flashcard("ไม่", "No"));
-        cards.add(new Flashcard("ขอโทษ", "Sorry"));
-        cards.add(new Flashcard("ลาก่อน", "Goodbye"));
-        cards.add(new Flashcard("ช่วยเหลือ", "Help"));
-        cards.add(new Flashcard("น้ำ", "Water"));
-        cards.add(new Flashcard("อาหาร", "Food"));
-        cards.add(new Flashcard("ห้องน้ำ", "Bathroom"));
-        cards.add(new Flashcard("เท่าไหร่", "How much?"));
-        cards.add(new Flashcard("แพง", "Expensive"));
-        cards.add(new Flashcard("ถูก", "Cheap"));
-        cards.add(new Flashcard("อร่อย", "Delicious"));
-        cards.add(new Flashcard("เผ็ด", "Spicy"));
-        cards.add(new Flashcard("ร้อน", "Hot"));
-        cards.add(new Flashcard("หนาว", "Cold"));
-        cards.add(new Flashcard("สวย", "Beautiful"));
-        cards.add(new Flashcard("น่ารัก", "Cute"));
+        cards.add(new Flashcard("สวัสดี", "Hello", "sà-wàt-dii"));
+        cards.add(new Flashcard("ขอบคุณ", "Thank you", "kòp-kun"));
+        cards.add(new Flashcard("ยินดีที่ได้<br>รู้จัก", "Nice to meet you", "yin-dii-tîi-dâi-rúu-jàk"));
+        cards.add(new Flashcard("ใช่", "Yes", "châi"));
+        cards.add(new Flashcard("ไม่", "No", "mâi"));
+        cards.add(new Flashcard("ขอโทษ", "Sorry", "kŏr-tôht"));
+        cards.add(new Flashcard("ลาก่อน", "Goodbye", "laa-gòn"));
+        cards.add(new Flashcard("ช่วยเหลือ", "Help", "chûay-lĕua"));
+        cards.add(new Flashcard("น้ำ", "Water", "náam"));
+        cards.add(new Flashcard("อาหาร", "Food", "aa-hăan"));
+        cards.add(new Flashcard("ห้องน้ำ", "Bathroom", "hông-náam"));
+        cards.add(new Flashcard("เท่าไหร่", "How much?", "tâo-rài"));
+        cards.add(new Flashcard("แพง", "Expensive", "paeng"));
+        cards.add(new Flashcard("ถูก", "Cheap", "tùuk"));
+        cards.add(new Flashcard("อร่อย", "Delicious", "à-ròi"));
+        cards.add(new Flashcard("เผ็ด", "Spicy", "pèt"));
+        cards.add(new Flashcard("ร้อน", "Hot", "rón"));
+        cards.add(new Flashcard("หนาว", "Cold", "năao"));
+        cards.add(new Flashcard("สวย", "Beautiful", "sŭay"));
+        cards.add(new Flashcard("น่ารัก", "Cute", "nâa-rák"));
     }
 
     public static List<Flashcard> getAllCards() {

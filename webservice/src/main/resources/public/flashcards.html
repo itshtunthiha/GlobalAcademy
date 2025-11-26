@@ -139,6 +139,14 @@
             line-height: 1.2;
         }
 
+        .pronunciation-text {
+            font-size: 16px;
+            color: #8a6d63;
+            font-style: italic;
+            margin-top: 8px;
+            text-align: center;
+        }
+
         .click-text {
             margin-top: 18px;
             color: #8a6d63;
@@ -472,12 +480,13 @@
         const modeToggleBtn = document.getElementById("modeToggleBtn");
         const subtitle = document.getElementById("subtitle");
 
-        function createCard(front, back) {
+        function createCard(front, back, pronunciation) {
             return `
                 <div class="card" onclick="this.classList.toggle('flipped')">
                     <div class="card-inner">
                         <div class="card-face card-front">
                             <div class="front-text">${front}</div>
+                            <div class="pronunciation-text">${pronunciation || ''}</div>
                             <div class="click-text">Click to flip</div>
                         </div>
                         <div class="card-face card-back">${back}</div>
@@ -495,7 +504,7 @@
             const cards = await res.json();
             container.innerHTML = '';
             cards.forEach(c => {
-                container.innerHTML += createCard(c.front, c.back);
+                container.innerHTML += createCard(c.front, c.back, c.pronunciation);
             });
         }
 
@@ -531,7 +540,7 @@
             }
 
             const card = currentBatch[currentBatchIndex];
-            container.innerHTML = createCard(card.front, card.back);
+            container.innerHTML = createCard(card.front, card.back, card.pronunciation);
 
             let currentProgress = totalReviewed + currentBatchIndex;
             progressText.textContent = `${currentProgress} / ${totalCount}`;
