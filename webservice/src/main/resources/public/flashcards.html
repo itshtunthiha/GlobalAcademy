@@ -788,13 +788,56 @@
         const modeToggleBtn = document.getElementById("modeToggleBtn");
         const subtitle = document.getElementById("subtitle");
         const progressContainer = document.getElementById("progressContainer");
+        // Use browser's native Web Speech API (system voice)
+        let currentUtterance = null;
+        let thaiVoice = null;
 
+        // Load available voices and find Thai voice
+        function loadVoices() {
+            const voices = window.speechSynthesis.getVoices();
+            // Look for Thai voice (th-TH or th)
+            thaiVoice = voices.find(voice => voice.lang.startsWith('th')) || null;
+            if (thaiVoice) {
+                console.log('Thai voice found:', thaiVoice.name);
+            }
+        }
+
+        // Voices are loaded asynchronously in some browsers
+        if (window.speechSynthesis.onvoiceschanged !== undefined) {
+            window.speechSynthesis.onvoiceschanged = loadVoices;
+        }
+        loadVoices(); // Also try loading immediately
 
         function speakText(event, text) {
-            event.stopPropagation(); // Prevent card flip
-            const utterance = new SpeechSynthesisUtterance(text);
-            utterance.lang = 'th-TH'; // Thai language
-            window.speechSynthesis.speak(utterance);
+            if (event) {
+                event.stopPropagation(); // Prevent card flip
+            }
+
+            if (!text) {
+                return;
+            }
+
+            // Cancel any ongoing speech
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+            }
+
+            // Create a new utterance with the text
+            currentUtterance = new SpeechSynthesisUtterance(text);
+
+            // Use Thai voice if available
+            if (thaiVoice) {
+                currentUtterance.voice = thaiVoice;
+            }
+            currentUtterance.lang = 'th-TH'; // Set language to Thai
+
+            // Configure voice settings
+            currentUtterance.rate = 0.9;  // Slightly slower for clarity
+            currentUtterance.pitch = 1.0;
+            currentUtterance.volume = 1.0;
+
+            // Speak the text using the Thai voice
+            window.speechSynthesis.speak(currentUtterance);
         }
 
         function createCard(front, back, pronunciation) {
@@ -851,12 +894,9 @@
             const speakerIcons = container.querySelectorAll('.speaker-icon');
             speakerIcons.forEach(icon => {
                 icon.addEventListener('click', (e) => {
-                    e.stopPropagation();
                     const text = icon.getAttribute('data-text');
                     if (text) {
-                        const utterance = new SpeechSynthesisUtterance(text);
-                        utterance.lang = 'th-TH';
-                        window.speechSynthesis.speak(utterance);
+                        speakText(e, text);
                     }
                 });
             });
@@ -915,12 +955,9 @@
             const speakerIcon = container.querySelector('.speaker-icon');
             if (speakerIcon) {
                 speakerIcon.addEventListener('click', (e) => {
-                    e.stopPropagation();
                     const text = speakerIcon.getAttribute('data-text');
                     if (text) {
-                        const utterance = new SpeechSynthesisUtterance(text);
-                        utterance.lang = 'th-TH';
-                        window.speechSynthesis.speak(utterance);
+                        speakText(e, text);
                     }
                 });
             }
